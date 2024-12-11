@@ -1,0 +1,14 @@
+<div class="container mt-5">
+    <h3>Adoption Requests</h3>
+    <div *ngIf="adoptionRequests.length === 0">
+      <p>No adoption requests available.</p>
+    </div>
+    <div *ngFor="let request of adoptionRequests" class="card mt-3">
+      <div class="card-body">
+        <h5 class="card-title">Adoption Request for {{ request.petName }}</h5>
+        <p class="card-text">Requested by: {{ request.userName }}</p>
+        <p>Status: {{ request.status }}</p>
+        <button class="btn btn-info" (click)="viewRequestDetails(request.id)">View Details</button>
+      </div>
+    </div>
+  </div>

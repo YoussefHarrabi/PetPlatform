@@ -1,0 +1,29 @@
+<div class="container mt-5">
+    <h2>Adoptable Pets</h2>
+    <div class="card p-4 shadow">
+      <div class="row row-cols-1 row-cols-md-3 g-3">
+        <div class="col" *ngFor="let pet of pets">
+          <div class="card h-100 text-center">
+            <img [src]="pet.imageUrl" class="card-img-top pet-image" alt="pet image" />
+            <div class="card-body">
+              <h5 class="card-title">{{ pet.name }}</h5>
+              <p class="card-text">{{ pet.type }} - {{ pet.age }} years old</p>
+              <div class="d-flex justify-content-around">
+                <button class="btn btn-primary" (click)="adoptPet(pet.id)">Adopt</button>
+                <button class="btn btn-danger" >Delete</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <style>
+    .pet-image {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+  </style>
+  

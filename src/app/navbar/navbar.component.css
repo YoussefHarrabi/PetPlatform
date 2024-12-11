@@ -1,0 +1,44 @@
+.navbar {
+    margin-bottom: 20px;
+  }
+  .top-header {
+    background-color: #ffffff;
+    border-bottom: 2px solid #4b0145;
+  }
+  
+  .top-header .logo img {
+    height: 30px;
+  }
+  
+  .top-header .logo span {
+    color: #4b0145;
+    font-weight: bold;
+  }
+  
+  .top-header .search-bar input {
+    width: 300px;
+  }
+  
+  .top-header .btn-outline-dark i {
+    font-size: 1rem;
+  }
+  
+  .top-header .btn-danger {
+    color: white;
+    background-color: #dc3545;
+    border: none;
+  }
+  .navbar .dropdown-menu {
+    min-width: 10rem;
+    text-align: left;
+  }
+  
+  .navbar .dropdown-menu a {
+    color: #4b0145;
+    transition: color 0.2s ease-in-out;
+  }
+  
+  .navbar .dropdown-menu a:hover {
+    color: #6a1b9a;
+  }
+  
