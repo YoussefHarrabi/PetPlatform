@@ -1,79 +1,103 @@
 <div class="container mt-5">
-    <h2>Add a Pet for Adoption</h2>
-    <form (ngSubmit)="onSubmit()" #petForm="ngForm">
-      <div class="mb-3">
-        <label for="name" class="form-label">Name</label>
-        <input
-          type="text"
-          id="name"
-          class="form-control"
-          [(ngModel)]="pet.name"
-          name="name"
-          required
-        />
-      </div>
-      <div class="mb-3">
-        <label for="type" class="form-label">Type</label>
-        <select
-          id="type"
-          class="form-select"
-          [(ngModel)]="pet.type"
-          name="type"
-          required
-        >
-          <option value="Dog">Dog</option>
-          <option value="Cat">Cat</option>
-          <option value="Rabbit">Rabbit</option>
-          <option value="Other">Other</option>
-        </select>
-      </div>
-      <div class="mb-3">
-        <label for="age" class="form-label">Age</label>
-        <input
-          type="number"
-          id="age"
-          class="form-control"
-          [(ngModel)]="pet.age"
-          name="age"
-          required
-        />
-      </div>
-      <div class="mb-3">
-        <label for="gender" class="form-label">Gender</label>
-        <select
-          id="gender"
-          class="form-select"
-          [(ngModel)]="pet.gender"
-          name="gender"
-          required
-        >
-          <option value="Male">Male</option>
-          <option value="Female">Female</option>
-        </select>
-      </div>
-      <div class="mb-3">
-        <label for="location" class="form-label">Location</label>
-        <input
-          type="text"
-          id="location"
-          class="form-control"
-          [(ngModel)]="pet.location"
-          name="location"
-          required
-        />
-      </div>
-      <div class="mb-3">
-        <label for="imageUrl" class="form-label">Image URL</label>
-        <input
-          type="url"
-          id="imageUrl"
-          class="form-control"
-          [(ngModel)]="pet.imageUrl"
-          name="imageUrl"
-          required
-        />
-      </div>
-      <button type="submit" class="btn btn-primary">Add Pet</button>
-    </form>
-  </div>
-  
+  <h2>Ajouter un animal à l'adoption</h2>
+  <form (ngSubmit)="onSubmit()" #petForm="ngForm">
+    <!-- Name Field -->
+    <div class="mb-3">
+      <label for="name" class="form-label">Nom</label>
+      <input
+        type="text"
+        id="name"
+        class="form-control"
+        [(ngModel)]="pet.name"
+        name="name"
+        required
+      />
+    </div>
+
+    <!-- Breed Field -->
+    <div class="mb-3">
+      <label for="breed" class="form-label">Race</label>
+      <input
+        type="text"
+        id="breed"
+        class="form-control"
+        [(ngModel)]="pet.breed"
+        name="breed"
+        required
+      />
+    </div>
+
+    <!-- Age Field -->
+    <div class="mb-3">
+      <label for="age" class="form-label">Âge</label>
+      <input
+        type="number"
+        id="age"
+        class="form-control"
+        [(ngModel)]="pet.age"
+        name="age"
+        required
+      />
+    </div>
+
+    <!-- Gender Field -->
+    <div class="mb-3">
+      <label for="gender" class="form-label">Sexe</label>
+      <select
+        id="gender"
+        class="form-select"
+        [(ngModel)]="pet.gender"
+        name="gender"
+        required
+      >
+        <option value="Male">Mâle</option>
+        <option value="Female">Femelle</option>
+      </select>
+    </div>
+
+    <!-- Location Field -->
+    <div class="mb-3">
+      <label for="location" class="form-label">Emplacement</label>
+      <input
+        type="text"
+        id="location"
+        class="form-control"
+        [(ngModel)]="pet.location"
+        name="location"
+        required
+      />
+    </div>
+
+    <!-- History Field -->
+    <div class="mb-3">
+      <label for="history" class="form-label">Histoire</label>
+      <textarea
+        id="history"
+        class="form-control"
+        [(ngModel)]="pet.history"
+        name="history"
+        required
+      ></textarea>
+    </div>
+
+    <!-- Image Upload Field -->
+    <div class="mb-3">
+      <label for="imageUrl" class="form-label">Choisir une photo</label>
+      <input
+        type="file"
+        accept="image/*"
+        id="imageUrl"
+        class="form-control"
+        (change)="onFileSelected($event)"
+      />
+    </div>
+
+    <!-- Image Preview -->
+    <div *ngIf="imagePreview">
+      <img [src]="imagePreview" alt="Image Preview" class="img-thumbnail" width="100"/>
+    </div>
+
+    <!-- Submit Button -->
+    <button type="submit" class="btn btn-primary" [disabled]="!petForm.form.valid">Ajouter un animal</button>
+  </form>
+</div>

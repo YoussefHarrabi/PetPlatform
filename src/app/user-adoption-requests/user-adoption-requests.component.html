@@ -1,13 +1,54 @@
 <div class="container mt-5">
-    <h3>Your Adoption Requests</h3>
-    <div *ngIf="userRequests.length === 0">
-      <p>You have not made any adoption requests yet.</p>
+  <h3>Vos demandes d'adoption</h3>
+  <div *ngIf="userRequests.length === 0">
+    <p>Vous n'avez fait aucune demande d'adoption pour l'instant.</p>
+  </div>
+  <div *ngFor="let request of userRequests" class="card mt-3">
+    <div class="card-body">
+      <h5 class="card-title">Demande d'adoption pour {{ request.petName }}</h5>
+      <p class="card-text">Statut : {{ request.status }}</p>
+      <button class="btn btn-info" (click)="viewRequestDetails(request.id)">Voir les détails</button>
+      <button class="btn btn-danger" (click)="deleteAdoptionRequest(request.id)"*ngIf="request.status === 'PENDING'" >Delete</button>
+      <button class="btn btn-primary"    data-bs-toggle="modal" data-bs-target="#editRequestModal" (click)="editAdoptionRequest(request)" *ngIf="request.status === 'PENDING'">Modifier la demande</button>
     </div>
-    <div *ngFor="let request of userRequests" class="card mt-3">
-      <div class="card-body">
-        <h5 class="card-title">Adoption Request for {{ request.petName }}</h5>
-        <p class="card-text">Status: {{ request.status }}</p>
-        <button class="btn btn-info" (click)="viewRequestDetails(request.id)">View Details</button>
+  </div>
+
+  <!-- Modal for Editing the Request -->
+  <div class="modal fade" id="editRequestModal" tabindex="-1" role="dialog" aria-labelledby="editRequestModalLabel" aria-hidden="true" >
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editRequestModalLabel">Modifier la demande d'adoption</h5>
+          <button type="button" id="closeButtonForEditModal" class="close" data-bs-dismiss="modal" aria-label="Close" (click)="closeEditModal()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form (ngSubmit)="updateAdoptionRequest()">
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input id="email" [(ngModel)]="selectedRequestForEdit.userEmail" name="email" class="form-control" />
+            </div>
+            <div class="form-group">
+              <label for="reason">Raison de l'adoption</label>
+              <textarea id="reason" [(ngModel)]="selectedRequestForEdit.reasonForAdoption" name="reason" class="form-control" rows="3"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary mt-3">Mettre à jour</button>
+            <button type="button" class="btn btn-secondary mt-3" (click)="closeEditModal()" data-bs-dismiss="modal"
+            aria-label="Close">Annuler</button>
+          </form>
+        </div>
       </div>
     </div>
   </div>
+
+  <!-- Details Section -->
+  <div *ngIf="selectedRequest" class="mt-4 p-3 border rounded bg-light">
+    <h4>Détails de la demande d'adoption</h4>
+    <p><strong>Nom de l'animal :</strong> {{ selectedRequest.petName }}</p>
+    <p><strong>Raison de l'adoption :</strong> {{ selectedRequest.reason }}</p>
+    <p><strong>Date de la demande :</strong> {{ selectedRequest.requestDate | date:'longDate' }}</p>
+    <p><strong>Statut :</strong> {{ selectedRequest.status }}</p>
+    <button class="btn btn-secondary mt-2" (click)="closeDetails()">Fermer</button>
+  </div>
+</div>

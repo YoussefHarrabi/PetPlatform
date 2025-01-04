@@ -1,0 +1,129 @@
+<div class="container mt-4">
+  <h1 class="mb-4 text-center">Vos Animaux à Adopter</h1>
+  <div class="row" *ngIf="userPets.length > 0; else noPets">
+    <div class="col-md-4 mb-3" *ngFor="let pet of userPets">
+      <div class="card h-100">
+        <img
+          [src]="getImageUrl(pet.imageUrl)"
+          class="card-img-top"
+          alt="Image de l'animal"
+        />
+        <div class="card-body">
+          <h5 class="card-title">{{ pet.name }}</h5>
+          <p class="card-text">Type: {{ pet.type }}</p>
+          <p class="card-text">Âge: {{ pet.age }} ans</p>
+          <p class="card-text">Race: {{ pet.breed }}</p>
+          <p class="card-text">Genre: {{ pet.gender }}</p>
+        </div>
+        <div class="card-footer d-flex justify-content-between">
+          <button class="btn btn-primary" (click)="openEditModal(pet)">Modifier</button>
+          <button class="btn btn-danger" (click)="deletePet(pet.id)">Supprimer</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #noPets>
+    <div class="alert alert-warning text-center">Aucun animal trouvé.</div>
+  </ng-template>
+</div>
+
+ <!-- Edit Pet Modal -->
+ <div class="modal fade" id="editPetModal" tabindex="-1" aria-labelledby="editPetModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editPetModalLabel">Edit Pet</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form *ngIf="selectedPet">
+          <!-- Pet Name -->
+          <div class="mb-3">
+            <label for="petName" class="form-label">Pet Name</label>
+            <input
+              type="text"
+              class="form-control"
+              id="petName"
+              [(ngModel)]="selectedPet.name"
+              name="name"
+            />
+          </div>
+
+          <!-- Pet Age -->
+          <div class="mb-3">
+            <label for="petAge" class="form-label">Pet Age</label>
+            <input
+              type="number"
+              class="form-control"
+              id="petAge"
+              [(ngModel)]="selectedPet.age"
+              name="age"
+            />
+          </div>
+
+          <!-- Pet Breed -->
+          <div class="mb-3">
+            <label for="petBreed" class="form-label">Pet Breed</label>
+            <input
+              type="text"
+              class="form-control"
+              id="petBreed"
+              [(ngModel)]="selectedPet.breed"
+              name="breed"
+            />
+          </div>
+
+          <!-- Pet Gender -->
+          <div class="mb-3">
+            <label for="petGender" class="form-label">Pet Gender</label>
+            <select class="form-select" id="petGender" [(ngModel)]="selectedPet.gender" name="gender">
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+            </select>
+          </div>
+
+          <!-- Pet Location -->
+          <div class="mb-3">
+            <label for="petLocation" class="form-label">Pet Location</label>
+            <input
+              type="text"
+              class="form-control"
+              id="petLocation"
+              [(ngModel)]="selectedPet.location"
+              name="location"
+            />
+          </div>
+
+          <!-- Pet History -->
+          <div class="mb-3">
+            <label for="petHistory" class="form-label">Pet History</label>
+            <textarea
+              class="form-control"
+              id="petHistory"
+              [(ngModel)]="selectedPet.history"
+              name="history"
+            ></textarea>
+          </div>
+
+          <div class="mb-3">
+            <label for="petImage" class="form-label">Pet Image</label>
+            <input 
+              type="file" 
+              class="form-control" 
+              id="petImage" 
+              (change)="onImageSelected($event)" 
+              accept="image/*"
+            />
+          
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" (click)="saveChanges()">Save Changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+

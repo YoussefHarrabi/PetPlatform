@@ -1,57 +1,51 @@
 <body>
-    <div class="container">
-      <div class="row min-vh-100 justify-content-center align-items-center">
-        <div class="col-12 col-sm-10 col-md-8 col-lg-6 col-xl-5">
-          <div class="card shadow-sm border-0 rounded-4 p-4">
-            <!-- Logo -->
-            <div class="text-center mb-4">
-              <div class="d-inline-flex align-items-center">
-                <svg class="text-purple me-2" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M12 2a3 3 0 0 0-3 3c0 1.7 1.3 3 3 3s3-1.3 3-3a3 3 0 0 0-3-3z"/>
-                  <path d="M19 9a3 3 0 0 0-3-3h-2a3 3 0 0 0-2 .8a3 3 0 0 0-2-.8H8a3 3 0 0 0-3 3v11h14V9z"/>
-                </svg>
-                <span class="h4 mb-0">
-                  <span class="text-purple">Paw</span>Finder
-                </span>
-              </div>
+  <div class="container">
+    <div class="row min-vh-100 justify-content-center align-items-center">
+      <div class="col-12 col-sm-10 col-md-8 col-lg-6 col-xl-5">
+        <div class="card shadow-sm border-0 rounded-4 p-4">
+          <!-- Logo -->
+          <div class="text-center mb-4">
+            <div class="d-inline-flex align-items-center">
+              <svg class="text-purple me-2" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 2a3 3 0 0 0-3 3c0 1.7 1.3 3 3 3s3-1.3 3-3a3 3 0 0 0-3-3z"/>
+                <path d="M19 9a3 3 0 0 0-3-3h-2a3 3 0 0 0-2 .8a3 3 0 0 0-2-.8H8a3 3 0 0 0-3 3v11h14V9z"/>
+              </svg>
+              <span class="h4 mb-0">
+                <span class="text-purple">Paw</span>Finder
+              </span>
             </div>
-
-            <!-- Title -->
-            <h1 class="h3 text-center mb-4">Sign in</h1>
-
-            <!-- Notice -->
-            <div class="text-center mb-4">
-              <p class="text-muted">
-                Important notice for 24Petwatch customers: Your and your pet's information 
-                has moved to PetPlace. You can now access your 24Petwatch account from PetPlace.
-              </p>
-            </div>
-
-            <!-- Login Form -->
-            <form (ngSubmit)="onLogin()" #loginForm="ngForm">
-              <div class="mb-3">
-                <label for="username" class="form-label">Sign in with your sign-in name</label>
-                <input type="text" class="form-control" id="username" placeholder="Sign in name" required [(ngModel)]="username" name="username">
-              </div>
-            
-              <div class="mb-3">
-                <input type="password" class="form-control" id="password" placeholder="Password" required [(ngModel)]="password" name="password">
-                <div class="mt-2">
-                  <a href="#" class="text-decoration-none text-purple">Forgot your password?</a>
-                </div>
-              </div>
-            
-              <button type="submit" class="btn btn-primary w-100 py-2 mb-3" [disabled]="!loginForm.valid">Sign in</button>
-            
-              <div class="text-center">
-                <span class="text-muted">Don't have an account? </span>
-                <a href="#" class="text-decoration-none text-purple">Sign up now</a>
-              </div>
-            </form>
           </div>
+
+          <!-- Title -->
+          <h1 class="h3 text-center mb-4">Se connecter</h1>
+
+          
+
+          <!-- Login Form -->
+          <form (ngSubmit)="onLogin()" #loginForm="ngForm">
+            <div class="mb-3">
+              <label for="username" class="form-label">Connectez-vous avec votre nom d'utilisateur</label>
+              <input type="text" class="form-control" id="username" placeholder="Nom d'utilisateur" required [(ngModel)]="username" name="username">
+            </div>
+          
+            <div class="mb-3">
+              <input type="password" class="form-control" id="password" placeholder="Mot de passe" required [(ngModel)]="password" name="password">
+              <div class="mt-2">
+                <a href="#" class="text-decoration-none text-purple">Mot de passe oublié ?</a>
+              </div>
+            </div>
+          
+            <button type="submit" class="btn btn-primary w-100 py-2 mb-3" [disabled]="!loginForm.valid">Se connecter</button>
+          
+            <div class="text-center">
+              <span class="text-muted">Vous n'avez pas de compte ? </span>
+              <a href="#" class="text-decoration-none text-purple">Inscrivez-vous maintenant</a>
+            </div>
+          </form>
         </div>
       </div>
     </div>
+  </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  </body>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>

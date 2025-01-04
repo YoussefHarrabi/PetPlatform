@@ -1,29 +1,66 @@
 <div class="container mt-5">
-    <h2>Adoptable Pets</h2>
-    <div class="card p-4 shadow">
-      <div class="row row-cols-1 row-cols-md-3 g-3">
-        <div class="col" *ngFor="let pet of pets">
-          <div class="card h-100 text-center">
-            <img [src]="pet.imageUrl" class="card-img-top pet-image" alt="pet image" />
-            <div class="card-body">
-              <h5 class="card-title">{{ pet.name }}</h5>
-              <p class="card-text">{{ pet.type }} - {{ pet.age }} years old</p>
-              <div class="d-flex justify-content-around">
-                <button class="btn btn-primary" (click)="adoptPet(pet.id)">Adopt</button>
-                <button class="btn btn-danger" >Delete</button>
-              </div>
+  <h2>Animaux à adopter</h2>
+
+  <!-- Filter Options -->
+  <div class="mb-3 d-flex justify-content-end gap-3 align-items-center">
+    <button class="btn btn-primary" (click)="toggleFilter('tous')">Tous</button>
+    <button class="btn btn-success" *ngIf="this.currentUserId" (click)="toggleFilter('mes animaux')">Mes animaux</button>
+  </div>
+
+  <!-- Filter Inputs -->
+  <div class="mb-3">
+    <label for="age" class="form-label">Âge:</label>
+    <input
+      type="number"
+      id="age"
+      class="form-control mb-2"
+      [(ngModel)]="filters.age"
+      placeholder="Filtrer par âge"
+    />
+
+    <label for="breed" class="form-label">Race:</label>
+    <input
+      type="text"
+      id="breed"
+      class="form-control mb-3"
+      [(ngModel)]="filters.breed"
+      placeholder="Filtrer par race"
+    />
+
+    <button class="btn btn-primary me-2" (click)="applyFilters()">Appliquer le filtre</button>
+    <button class="btn btn-secondary" (click)="resetFilters()">Réinitialiser</button>
+  </div>
+
+  <!-- Pets List -->
+  <div class="card p-4 shadow">
+    <div class="row row-cols-1 row-cols-md-3 g-3">
+      <div class="col" *ngFor="let pet of filteredPets">
+        <div class="card h-100 text-center">
+          <img
+            *ngIf="pet.imageUrl"
+            [src]="getImageUrl(pet.imageUrl)"
+            class="card-img-top pet-image"
+            alt="image de l'animal"
+          />
+          <div class="card-body">
+            <h5 class="card-title">{{ pet.name }}</h5>
+            <p class="card-text">{{ pet.type }} - {{ pet.age }} ans</p>
+            <p class="card-text" *ngIf="pet.breed">{{ pet.breed }} - {{ pet.gender }}</p>
+            <p class="card-text" *ngIf="!pet.breed">{{ pet.gender }}</p>
+            <div class="d-flex justify-content-around" *ngIf="pet.ownerId !== currentUserId">
+              <button class="btn btn-primary" *ngIf="this.currentUserId" (click)="adoptPet(pet.id)">Adopter</button>
             </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-  
-  <style>
-    .pet-image {
-      width: 100%;
-      height: 200px;
-      object-fit: cover;
-    }
-  </style>
-  
+</div>
+
+<style>
+  .pet-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+  }
+</style>

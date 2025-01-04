@@ -1,19 +1,21 @@
 <div class="container mt-5">
-    <h2>Adoption Request for Pet ID: {{ petId }}</h2>
-    <form (ngSubmit)="submitAdoptionRequest(adoptionForm)" #adoptionForm="ngForm">
-      <div class="mb-3">
-        <label for="name" class="form-label">Your Name</label>
-        <input type="text" id="name" name="name" class="form-control" ngModel required />
+  <h2>Demande d'Adoption pour l'Animal : {{ pet.name }}</h2>
+  <form [formGroup]="adoptionForm" (ngSubmit)="onSubmit()">
+
+    <div class="mb-3">
+      <label for="email" class="form-label">Votre Email</label>
+      <input id="email" formControlName="email" type="email"  class="form-control"  />
+      <div *ngIf="adoptionForm.get('email')?.invalid && adoptionForm.get('email')?.touched">
+        A valid email is required.
       </div>
-      <div class="mb-3">
-        <label for="email" class="form-label">Your Email</label>
-        <input type="email" id="email" name="email" class="form-control" ngModel required />
+    </div>
+    <div class="mb-3">
+      <label for="reason" class="form-label">Raison pour l'Adoption</label>
+      <textarea d="reason" formControlName="reason"class="form-control" rows="3" ></textarea>
+      <div *ngIf="adoptionForm.get('reason')?.invalid && adoptionForm.get('reason')?.touched">
+        Reason is required.
       </div>
-      <div class="mb-3">
-        <label for="reason" class="form-label">Reason for Adoption</label>
-        <textarea id="reason" name="reason" class="form-control" rows="3" ngModel required></textarea>
-      </div>
-      <button type="submit" class="btn btn-success">Submit Request</button>
-    </form>
-  </div>
-  
+    </div>
+    <button type="submit" [disabled]="adoptionForm.invalid"class="btn btn-success">Soumettre la Demande</button>
+  </form>
+</div>

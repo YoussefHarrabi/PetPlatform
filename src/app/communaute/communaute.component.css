@@ -1,0 +1,11 @@
+.container {
+    max-width: 800px;
+  }
+  
+  .card {
+    border-left: 4px solid #0d6efd;
+  }
+  
+  .btn {
+    margin-right: 5px;
+  }

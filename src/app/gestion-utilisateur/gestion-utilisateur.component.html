@@ -1,0 +1,155 @@
+<div class="container mt-4">
+  <h2>Gestion des Utilisateurs</h2>
+
+  <!-- Add User Form -->
+  <form [formGroup]="addUserForm" (ngSubmit)="addUser()" class="mb-4">
+    <h4>Ajouter un Utilisateur</h4>
+  
+    <!-- Username -->
+    <input
+      type="text"
+      class="form-control mb-2"
+      placeholder="Nom d'utilisateur"
+      formControlName="username"
+    />
+    <div *ngIf="addUserForm.get('username')?.invalid && addUserForm.get('username')?.touched" class="text-danger">
+      Nom d'utilisateur requis (au moins 3 caractères).
+    </div>
+  
+    <!-- Password -->
+    <input
+      type="password"
+      class="form-control mb-2"
+      placeholder="Mot de passe"
+      formControlName="password"
+    />
+    <div *ngIf="addUserForm.get('password')?.invalid && addUserForm.get('password')?.touched" class="text-danger">
+      Mot de passe requis (au moins 6 caractères).
+    </div>
+  
+    <!-- Confirm Password -->
+    <input
+      type="password"
+      class="form-control mb-2"
+      placeholder="Confirmez le mot de passe"
+      formControlName="confirmPassword"
+    />
+    <div *ngIf="addUserForm.get('confirmPassword')?.invalid && addUserForm.get('confirmPassword')?.touched" class="text-danger">
+      Confirmation du mot de passe requise.
+    </div>
+  
+    <!-- Nom -->
+    <input
+      type="text"
+      class="form-control mb-2"
+      placeholder="Nom"
+      formControlName="nom"
+    />
+    <div *ngIf="addUserForm.get('nom')?.invalid && addUserForm.get('nom')?.touched" class="text-danger">
+      Nom requis.
+    </div>
+  
+    <!-- Contact -->
+    <input
+      type="text"
+      class="form-control mb-2"
+      placeholder="Contact"
+      formControlName="contact"
+    />
+    <div *ngIf="addUserForm.get('contact')?.invalid && addUserForm.get('contact')?.touched" class="text-danger">
+      Contact invalide (uniquement des numéros ou des symboles autorisés).
+    </div>
+  
+    <!-- Adoption Situation -->
+    <input
+      type="text"
+      class="form-control mb-2"
+      placeholder="Situation d'Adoption"
+      formControlName="adoptionSituation"
+    />
+  
+    <!-- Roles -->
+    <select class="form-select mb-2" formControlName="roles" multiple>
+      <option *ngFor="let role of ['ADMIN', 'ADOPTANT', 'REFUGE']" [value]="role">{{ role }}</option>
+    </select>
+    <div *ngIf="addUserForm.get('roles')?.invalid && addUserForm.get('roles')?.touched" class="text-danger">
+      Au moins un rôle doit être sélectionné.
+    </div>
+  
+    <button type="submit" class="btn btn-primary" [disabled]="addUserForm.invalid">
+      Ajouter
+    </button>
+  </form>
+  
+
+  <!-- User List -->
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Nom d'utilisateur</th>
+        <th>Nom</th>
+        <th>Contact</th>
+        <th>Situation d'Adoption</th>
+        <th>Rôles</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let user of users">
+        <td *ngIf="editUser?.id !== user.id">{{ user.username }}</td>
+        <td *ngIf="editUser?.id === user.id">
+          <input type="text" [(ngModel)]="editUser!.username" class="form-control">
+        </td>
+        <td>{{ user.nom }}</td>
+        <td>{{ user.contact }}</td>
+        <td>{{ user.adoptionSituation }}</td>
+        <td>{{ user.roles.join(', ') }}</td>
+        <td>
+          <button class="btn btn-sm btn-warning me-2" (click)="openEditModal(user)">Modifier</button>
+          <button class="btn btn-sm btn-danger" (click)="deleteUser(user.id)">Supprimer</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+   <!-- Edit User Modal -->
+   <div class="modal fade" id="editUserModal" tabindex="-1" aria-labelledby="editUserModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editUserModalLabel">Modifier Utilisateur</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="mb-3">
+              <label for="editUsername" class="form-label">Nom d'utilisateur</label>
+              <input type="text" id="editUsername" class="form-control" [(ngModel)]="editUser.username" name="editUsername">
+            </div>
+            <div class="mb-3">
+              <label for="editNom" class="form-label">Nom</label>
+              <input type="text" id="editNom" class="form-control" [(ngModel)]="editUser.nom" name="editNom">
+            </div>
+            <div class="mb-3">
+              <label for="editContact" class="form-label">Contact</label>
+              <input type="text" id="editContact" class="form-control" [(ngModel)]="editUser.contact" name="editContact">
+            </div>
+            <div class="mb-3">
+              <label for="editAdoptionSituation" class="form-label">Situation d'Adoption</label>
+              <input type="text" id="editAdoptionSituation" class="form-control" [(ngModel)]="editUser.adoptionSituation" name="editAdoptionSituation">
+            </div>
+            <div class="mb-3">
+              <label for="editRoles" class="form-label">Rôles</label>
+              <select id="editRoles" class="form-select" [(ngModel)]="editUser.roles" name="editRoles" multiple>
+                <option *ngFor="let role of ['ADMIN', 'ADOPTANT', 'REFUGE']" [value]="role">{{ role }}</option>
+              </select>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+          <button type="button" class="btn btn-primary" (click)="saveEdit()" data-bs-dismiss="modal">Enregistrer</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

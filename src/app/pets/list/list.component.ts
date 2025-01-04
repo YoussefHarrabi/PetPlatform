@@ -2,73 +2,87 @@ import { Component, OnInit } from '@angular/core';
 import { PetService } from '../../services/pet.service';
 import { Pet } from '../../models/pet';
 import { Router } from '@angular/router';
+import { UserAuthService } from 'src/app/services/user-auth.service';
+
 @Component({
   selector: 'app-list',
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.css']
 })
-export class ListComponent  {
-  
-  pets: Pet[] = [
-    { 
-        id: '1', 
-        name: 'Bambi', 
-        type: 'Rabbit', 
-        breed: 'Shorthaired Rabbit', 
-        age: 2, 
-        gender: 'Male', 
-        location: 'Los Angeles, CA', 
-        description: 'A friendly rabbit who loves to hop around and explore.', 
-        imageUrl: 'https://cottontails-rescue.org.uk/wp-content/uploads/2013/01/gen_photo_for_website_2_19_7_12.jpg', 
-        availableForAdoption: true 
-    },
-    { 
-        id: '2', 
-        name: 'Cindy', 
-        type: 'Dog', 
-        breed: 'Mixed Breed', 
-        age: 3, 
-        gender: 'Female', 
-        location: 'Los Angeles, CA', 
-        description: 'A sweet and energetic mixed-breed dog looking for a loving home.', 
-        imageUrl: 'https://dl5zpyw5k3jeb.cloudfront.net/photos/pets/69482170/0/?bust=1733467024&width=720', 
-        availableForAdoption: true 
-    },
-    { 
-        id: '3', 
-        name: 'Bailey', 
-        type: 'Dog', 
-        breed: 'Staffordshire Bull Terrier', 
-        age: 4, 
-        gender: 'Female', 
-        location: 'Los Angeles, CA', 
-        description: 'A calm and loyal Staffordshire Bull Terrier who loves attention.', 
-        imageUrl: 'https://i.pinimg.com/736x/45/c9/df/45c9dfefe0ac4c5f87f5e76cde1e965b.jpg', 
-        availableForAdoption: true 
-    },
-    { 
-        id: '4', 
-        name: 'Aphrodite', 
-        type: 'Dog', 
-        breed: 'Mixed Breed', 
-        age: 2, 
-        gender: 'Female', 
-        location: 'Los Angeles, CA', 
-        description: 'A playful and loving dog who gets along well with other pets.', 
-        imageUrl: 'https://dbw3zep4prcju.cloudfront.net/animal/d02ee6a8-f923-42f9-9f5f-07aedf209a61/image/66b5a62d-b67c-4bc4-858d-2696ecf0d5c7.jpeg?versionId=M4aHnbirEzMIXE9.xmrQA_iHpZ3eovnO&bust=1728841628&width=720', 
-        availableForAdoption: true 
-    }
-];
+export class ListComponent implements OnInit {
+  filteredPets: Pet[] = []; // List of pets to be displayed based on filter
+  pets: Pet[] = []; // Complete list of pets fetched from the backend
+  currentUserId: string | null = null; // Logged-in user's ID
+  showAll: boolean = true; // Toggle between all pets or only user's pets
+  filters: { age: any, breed: string } = { age: null, breed: '' };
 
+  constructor(
+    private petService: PetService,
+    private router: Router,
+    private userAuthService: UserAuthService
+  ) {}
 
- 
-  constructor(private petService: PetService, private router: Router) {}
-
-  adoptPet(petId: string) {
-    // Navigate to the adoption form page, passing the pet ID as a parameter
-    this.router.navigate(['/adoption-form', petId]);
+  ngOnInit(): void {
+    this.currentUserId = this.userAuthService.getCurrentUserId(); 
+    console.log('Current user ID:', this.currentUserId); // Get current user ID
+    this.loadPets(); // Fetch pets from the backend
   }
 
+  // Fetch pets from the backend
+  loadPets(): void {
+    this.petService.getPets().subscribe(
+      (response: Pet[]) => {
+        this.pets = response; // Update pets array with the backend response
+        this.resetFilters(); // Initialize filteredPets
+      },
+      (error) => {
+        console.error('Error fetching pets:', error);
+      }
+    );
+  }
 
+  // Reset filters and show all pets
+  resetFilters(): void {
+    this.filteredPets = [...this.pets]; // Reset to show all pets
+    this.filters = { age: null, breed: '' }; // Clear filter criteria
+  }
 
+  // Apply filters for age, breed, and owner
+  applyFilters(): void {
+    this.filteredPets = this.pets.filter(pet => {
+      console.log("hedha ",pet.ownerId)
+      return (
+        // Apply age filter
+        (this.filters.age ? pet.age === +this.filters.age : true) &&
+        // Apply breed filter
+        (this.filters.breed ? (pet.breed ? pet.breed.toLowerCase().includes(this.filters.breed.toLowerCase()) : false) : true) &&
+        // Apply filter based on the showAll state
+        (this.showAll || pet.ownerId === this.currentUserId)
+       
+      );
+    });
+  }
+
+  // Toggle between showing all pets or only user's pets
+  toggleFilter(option: string): void {
+    this.showAll = option === 'tous'; // Set to show all pets if 'tous' is selected
+    this.applyFilters(); // Apply the updated filters
+  }
+
+  // Navigate to the adoption form for the selected pet
+  adoptPet(petId: string): void {
+    if (!this.userAuthService.isLoggedIn()) {
+      alert('Veuillez vous connecter pour adopter un animal.');
+      this.router.navigate(['/login']);
+    } else {
+      // Navigate to the adoption form, passing petId as a route parameter
+      this.router.navigate(['/adoption-form', petId]);
+    }
+  }
+
+  // Construct the full image URL for the pet image
+  getImageUrl(imagePath: string): string {
+    const backendBaseUrl = 'http://localhost:8084'; // Replace with your backend's base URL for images
+    return `${backendBaseUrl}${imagePath}`; // Construct the full image URL
+  }
 }

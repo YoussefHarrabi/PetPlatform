@@ -1,19 +1,17 @@
-
 <div class="container my-5">
-    <h2 class="text-center mb-4">Adoptable Pets</h2>
-    <div class="row">
-      <div class="col-md-3" *ngFor="let pet of pets">
-        <div class="card shadow-sm">
-          <img [src]="pet.imageUrl" class="card-img-top" alt="{{ pet.name }}">
-          <div class="card-body">
-            <h5 class="card-title">{{ pet.name }}</h5>
-            <p class="card-text">
-              {{ pet.gender }} • {{ pet.breed }}
-            </p>
-            <p class="card-text text-muted">{{ pet.location }}</p>
-          </div>
+  <h2 class="text-center mb-4">Animaux à Adopter</h2>
+  <div class="row">
+    <div class="col-md-3" *ngFor="let pet of pets">
+      <div class="card shadow-sm">
+        <img [src]="pet.imageUrl" class="card-img-top" alt="{{ pet.name }}">
+        <div class="card-body">
+          <h5 class="card-title">{{ pet.name }}</h5>
+          <p class="card-text">
+            {{ pet.gender }} • {{ pet.breed }}
+          </p>
+          <p class="card-text text-muted">{{ pet.location }}</p>
         </div>
       </div>
     </div>
   </div>
-  
+</div>
